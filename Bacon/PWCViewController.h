@@ -10,7 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <FacebookSDK/Facebook.h>
 
-@interface PWCViewController : UIViewController
+@interface PWCViewController : UIViewController <CLLocationManagerDelegate>
 
 @property (strong, nonatomic) FBSession *session;
 

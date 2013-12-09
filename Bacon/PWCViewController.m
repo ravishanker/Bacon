@@ -11,10 +11,8 @@
 static NSString * const kSpreadsheetURL =
 @"https://docs.google.com/forms/d/1ctrAHWmIz-j_47LjRdWPnzHE8ELHjE_MW1X984p3csw/formResponse";
 static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
+static NSString * const kRegionIdentifier = @"au.com.pwc.BakerBeacon";
 
-static NSString * const kBlueRegionIdentifier = @"au.com.pwc.BlueBeacon";
-static NSString * const kGreenRegionIdentifier = @"au.com.pwc.GreenBeacon";
-static NSString * const kPurpleRegionIdentifier = @"au.com.pwc.PurpleBeacon";
 
 //Blue      beacon Major:394    Minor:58605
 //Green     beacon Major:40836  Minor:18108
@@ -23,6 +21,11 @@ static NSString * const kPurpleRegionIdentifier = @"au.com.pwc.PurpleBeacon";
 @interface PWCViewController ()
 
 @property (nonatomic, strong) CLLocationManager * locationManager;
+@property (nonatomic, strong) CLBeaconRegion *beaconRegion;
+@property (nonatomic, strong) CLRegion *locationRegion;
+
+@property (nonatomic, strong) CLBeacon *nearestBeacon;
+@property (nonatomic, strong) CLBeacon *currentBeacon;
 
 @property BOOL isFBdataFetched;
 
@@ -47,49 +50,27 @@ static NSString * const kPurpleRegionIdentifier = @"au.com.pwc.PurpleBeacon";
     //    _locationManager.distanceFilter = 2.0; // two meters
     _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
-    NSMutableArray * regions;
-    CLBeaconRegion *region;
     
     NSUUID *estimoteUUID = [[NSUUID alloc] initWithUUIDString:kUUID];
     
     // Blue Estimote
-    region = [[CLBeaconRegion alloc] initWithProximityUUID:estimoteUUID
-                                                     major:394
-                                                     minor:58605
-                                                identifier:kBlueRegionIdentifier];
+    _beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:estimoteUUID
+                                                identifier:kRegionIdentifier];
     
-    
-    // Green Estimote
-    region = [[CLBeaconRegion alloc] initWithProximityUUID:estimoteUUID
-                                                     major:40836
-                                                     minor:18108
-                                                identifier:kGreenRegionIdentifier];
-    
-    
-    // Purple Estimote
-    region = [[CLBeaconRegion alloc] initWithProximityUUID:estimoteUUID
-                                                     major:29836
-                                                     minor:57466
-                                                identifier:kPurpleRegionIdentifier];
-    
-    
-    if ([CLLocationManager isMonitoringAvailableForClass:[CLBeaconRegion class]]) {
+
+    if ([CLLocationManager isMonitoringAvailableForClass:[CLRegion class]]) {
         
-        for (CLBeaconRegion *region in regions) {
-            // launch app when display is turned on and inside region
-            [_locationManager startMonitoringForRegion:region];
-            
-            region.notifyEntryStateOnDisplay = YES;
-            
+            _beaconRegion.notifyEntryStateOnDisplay = YES;
+
             //To prevent redundant notifications from being delivered to the user
-            //            region.notifyOnEntry = NO;
+            _beaconRegion.notifyOnEntry = NO;
+            _beaconRegion.notifyOnExit = YES;
+        
+            // launch app when display is turned on and inside region
+            [_locationManager startMonitoringForRegion:_beaconRegion];
             
             // get status update right away for UI
             //            [_locationManager requestStateForRegion:region];
-        }
-        
-        
-        
         
     } else {
         NSLog(@"This device does not support monitoring beacon regions");
@@ -114,23 +95,21 @@ static NSString * const kPurpleRegionIdentifier = @"au.com.pwc.PurpleBeacon";
 }
 
 
-
-- (void)setProductOfferWithRegionIdentifer:(NSString *)identifier
+- (void)setProductOffer:(NSNumber *)minor
 {
-    if ([identifier isEqualToString:kBlueRegionIdentifier]) {
-        self.offerImage.image = [UIImage imageNamed:@"blue_promotion"];
-        
-    } else if ([identifier isEqualToString:kGreenRegionIdentifier]) {
-        self.offerImage.image = [UIImage imageNamed:@"green_promotion"];
-        
-    } else if ([identifier isEqualToString:kPurpleRegionIdentifier]) {
-        self.offerImage.image = [UIImage imageNamed:@"purple_promotion"];
-        
-    } else {
+    if ([minor isEqualToNumber:@58605]) {
         self.offerImage.image = [UIImage imageNamed:@"purpleNotificationBig"];
+        
+    } else if ([minor isEqualToNumber:@18108]) {
+        self.offerImage.image = [UIImage imageNamed:@"greenNotificationBig"];
+        
+    } else if ([minor isEqualToNumber:@57466]) {
+        self.offerImage.image = [UIImage imageNamed:@"purpleNotificationBig"];
+        
     }
     
 }
+
 
 // relative distance string value to beacon
 - (NSString *)proxmityString:(CLProximity)proximity
@@ -159,23 +138,47 @@ static NSString * const kPurpleRegionIdentifier = @"au.com.pwc.PurpleBeacon";
 #pragma mark - CLLocationManagerDelegate methods
 
 - (void)locationManager:(CLLocationManager *)manager
-	  didDetermineState:(CLRegionState)state
-              forRegion:(CLRegion *)region
-{
+        didRangeBeacons:(NSArray *)beacons
+               inRegion:(CLRegion *)region {
     
-    NSLog(@"Region %@ identifier", region.identifier );
+    NSString * relativeDistance;
     
-    if (CLRegionStateInside == state) {
-        [self setProductOfferWithRegionIdentifer:region.identifier];
+    if (beacons.count > 0) {
+        NSLog(@"Found beacons! %@", beacons);
+        
+        // TODO: Sort beacons by by distance
+        _nearestBeacon = [beacons objectAtIndex:0];
+        
+        relativeDistance = [self proxmityString:_nearestBeacon.proximity];
+        
+        NSLog(@"%@, %@ • %@ • %.2fm • %li",
+              _nearestBeacon.major.stringValue,
+              _nearestBeacon.minor.stringValue, relativeDistance,
+              _nearestBeacon.accuracy,
+              (long)_nearestBeacon.rssi);
+        
+        
+        if (CLProximityImmediate == _nearestBeacon.proximity) {
+            [self setProductOffer:_nearestBeacon.minor];
+            
+        } else {
+            self.offerImage.image = [UIImage imageNamed:@"purpleNotificationBig"];
+        }
+        
+    } else {
+        NSLog(@"No beacons found!");
+        
     }
     
     
 }
 
 - (void)locationManager:(CLLocationManager *)manager
-         didEnterRegion:(CLRegion *)region
+         didEnterRegion:(CLBeaconRegion *)region
 {
     NSLog(@"Inside Region %@", region.identifier);
+    
+    [_locationManager startRangingBeaconsInRegion:region];
     // A user can transition in or out of a region while the application is not running.
     // When this happens CoreLocation will launch the application momentarily, call this delegate method
     // and we will let the user know via a local notification.
@@ -187,14 +190,12 @@ static NSString * const kPurpleRegionIdentifier = @"au.com.pwc.PurpleBeacon";
     
     notification.alertBody = [NSString stringWithFormat:@"You're inside %@", region.identifier];
     
-    [self setProductOfferWithRegionIdentifer:region.identifier];
-    
-    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
     
 }
 
 - (void)locationManager:(CLLocationManager *)manager
-          didExitRegion:(CLRegion *)region
+          didExitRegion:(CLBeaconRegion *)region
 {
     NSLog(@"Outside Region %@", region.identifier);
     UILocalNotification *notification = [[UILocalNotification alloc] init];
@@ -209,13 +210,15 @@ static NSString * const kPurpleRegionIdentifier = @"au.com.pwc.PurpleBeacon";
     NSLog(@"Time Interval: %.2f", self.timeInterval);
     
     
-    notification.alertBody = [NSString stringWithFormat:@"You're inside %@", region.identifier];
+    notification.alertBody = [NSString stringWithFormat:@"You're outside %@", region.identifier];
     
     if (_isFBdataFetched) {
-        [self postDataToSpreadsheetViaForm:region];
+        [self postDataToSpreadsheet:region];
     }
     
-    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    [_locationManager stopRangingBeaconsInRegion:region];
+    
+    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
     
 }
 
@@ -228,8 +231,7 @@ static NSString * const kPurpleRegionIdentifier = @"au.com.pwc.PurpleBeacon";
     // Login or get user data from Facebook
     NSArray *permissions = @[@"basic_info", @"email"];
     if (self.session.isOpen) {
-        //        NSLog(@"%@ accessToken", fbTokenData);
-        //        [self fetchFBUserData];
+
         // TODO: Read archived FB Data
         
     } else {
@@ -307,13 +309,16 @@ static NSString * const kPurpleRegionIdentifier = @"au.com.pwc.PurpleBeacon";
 # define MAJOR          @"entry.857825636"
 # define MINOR          @"entry.1767879955"
 # define RSSI           @"entry.1246457524"
+# define ENTRY_TIME     @"entry.2007394417"
+# define EXIT_TIME      @"entry.33654778"
+# define DWELL_TIME     @"entry.437064902"
 # define FB_ID          @"entry.678980662"
 # define FB_FULL_NAME   @"entry.1448375634"
 # define FB_GENDER      @"entry.1424146187"
 # define FB_EMAIL       @"entry.2006994834"
 
 
-- (void)postDataToSpreadsheetViaForm:(CLRegion *)region
+- (void)postDataToSpreadsheet:(CLBeaconRegion *)region
 {
     NSURL *url = [[NSURL alloc] initWithString:kSpreadsheetURL];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -321,11 +326,14 @@ static NSString * const kPurpleRegionIdentifier = @"au.com.pwc.PurpleBeacon";
     
     NSLog(@"%@ User Data", self.userData);
     
-    NSString *params = [NSString stringWithFormat:@"%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@",
-                        EST_UUID, [NSString stringWithFormat:@"%.2f", self.timeInterval],
-                        MAJOR, [self dateStringWithDSTOffset:self.regionEntryTime],
-                        MINOR, [self dateStringWithDSTOffset:self.regionExitTime],
-                        RSSI, region.identifier,
+    NSString *params = [NSString stringWithFormat:@"%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@",
+                        EST_UUID, region.proximityUUID.UUIDString,
+                        MAJOR, region.major,
+                        MINOR, region.minor,
+                        RSSI, [self proxmityString:_nearestBeacon.proximity],
+                        ENTRY_TIME, [self dateStringWithDSTOffset:self.regionEntryTime],
+                        EXIT_TIME, [self dateStringWithDSTOffset:self.regionExitTime],
+                        DWELL_TIME, [NSString stringWithFormat:@"%.2f", self.timeInterval],
                         FB_ID, self.userData[@"fb_id"],
                         FB_FULL_NAME, self.userData[@"name"],
                         FB_GENDER, self.userData[@"gender"],
