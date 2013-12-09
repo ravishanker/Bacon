@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18D72AC873F54652B0AB34C7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAB90F81DEC244B6AC285BAE /* libPods.a */; };
 		41864D07185577120080112B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41864D06185577120080112B /* Foundation.framework */; };
 		41864D09185577120080112B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41864D08185577120080112B /* CoreGraphics.framework */; };
 		41864D0B185577120080112B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41864D0A185577120080112B /* UIKit.framework */; };
@@ -22,6 +23,8 @@
 		41864D2B185577120080112B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41864D0A185577120080112B /* UIKit.framework */; };
 		41864D33185577120080112B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 41864D31185577120080112B /* InfoPlist.strings */; };
 		41864D35185577120080112B /* BaconTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 41864D34185577120080112B /* BaconTests.m */; };
+		41864D3F1855851E0080112B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41864D3E1855851E0080112B /* CoreBluetooth.framework */; };
+		41864D41185585280080112B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41864D40185585280080112B /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +58,10 @@
 		41864D30185577120080112B /* BaconTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BaconTests-Info.plist"; sourceTree = "<group>"; };
 		41864D32185577120080112B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		41864D34185577120080112B /* BaconTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaconTests.m; sourceTree = "<group>"; };
+		41864D3E1855851E0080112B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		41864D40185585280080112B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		CD50AE7FF65C4E3CB58AFF92 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		FAB90F81DEC244B6AC285BAE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,9 +69,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41864D41185585280080112B /* CoreLocation.framework in Frameworks */,
+				41864D3F1855851E0080112B /* CoreBluetooth.framework in Frameworks */,
 				41864D09185577120080112B /* CoreGraphics.framework in Frameworks */,
 				41864D0B185577120080112B /* UIKit.framework in Frameworks */,
 				41864D07185577120080112B /* Foundation.framework in Frameworks */,
+				18D72AC873F54652B0AB34C7 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +98,7 @@
 				41864D2E185577120080112B /* BaconTests */,
 				41864D05185577120080112B /* Frameworks */,
 				41864D04185577120080112B /* Products */,
+				CD50AE7FF65C4E3CB58AFF92 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -103,10 +114,13 @@
 		41864D05185577120080112B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				41864D40185585280080112B /* CoreLocation.framework */,
+				41864D3E1855851E0080112B /* CoreBluetooth.framework */,
 				41864D06185577120080112B /* Foundation.framework */,
 				41864D08185577120080112B /* CoreGraphics.framework */,
 				41864D0A185577120080112B /* UIKit.framework */,
 				41864D28185577120080112B /* XCTest.framework */,
+				FAB90F81DEC244B6AC285BAE /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -162,9 +176,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 41864D38185577120080112B /* Build configuration list for PBXNativeTarget "Bacon" */;
 			buildPhases = (
+				378388A4EC6446EA910B7832 /* Check Pods Manifest.lock */,
 				41864CFF185577120080112B /* Sources */,
 				41864D00185577120080112B /* Frameworks */,
 				41864D01185577120080112B /* Resources */,
+				7F3E34E36EAF4481BA82D185 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -248,6 +264,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		378388A4EC6446EA910B7832 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		7F3E34E36EAF4481BA82D185 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		41864CFF185577120080112B /* Sources */ = {
@@ -390,6 +439,7 @@
 		};
 		41864D39185577120080112B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CD50AE7FF65C4E3CB58AFF92 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -403,6 +453,7 @@
 		};
 		41864D3A185577120080112B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CD50AE7FF65C4E3CB58AFF92 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -475,6 +526,7 @@
 				41864D3A185577120080112B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		41864D3B185577120080112B /* Build configuration list for PBXNativeTarget "BaconTests" */ = {
 			isa = XCConfigurationList;
@@ -483,6 +535,7 @@
 				41864D3D185577120080112B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
