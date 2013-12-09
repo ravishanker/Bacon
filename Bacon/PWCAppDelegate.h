@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FacebookSDK/FacebookSDK.h>
+
 
 @interface PWCAppDelegate : UIResponder <UIApplicationDelegate>
 

@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
+#import <FacebookSDK/Facebook.h>
 
 @interface PWCViewController : UIViewController
+
+@property (strong, nonatomic) FBSession *session;
+
+@property (weak, nonatomic) IBOutlet UIImageView *offerImage;
 
 @end
