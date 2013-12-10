@@ -13,7 +13,6 @@ static NSString * const kSpreadsheetURL =
 static NSString * const kUUID = @"B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 static NSString * const kRegionIdentifier = @"au.com.pwc.BakerBeacon";
 
-
 //Blue      beacon Major:394    Minor:58605
 //Green     beacon Major:40836  Minor:18108
 //Purple    beacon Major:29836  Minor:57466
@@ -63,14 +62,14 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.BakerBeacon";
             _beaconRegion.notifyEntryStateOnDisplay = YES;
 
             //To prevent redundant notifications from being delivered to the user
-            _beaconRegion.notifyOnEntry = NO;
-            _beaconRegion.notifyOnExit = YES;
+//            _beaconRegion.notifyOnEntry = NO;
+//            _beaconRegion.notifyOnExit = YES;
         
             // launch app when display is turned on and inside region
             [_locationManager startMonitoringForRegion:_beaconRegion];
             
             // get status update right away for UI
-            //            [_locationManager requestStateForRegion:region];
+            [_locationManager requestStateForRegion:_beaconRegion];
         
     } else {
         NSLog(@"This device does not support monitoring beacon regions");
@@ -98,13 +97,13 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.BakerBeacon";
 - (void)setProductOffer:(NSNumber *)minor
 {
     if ([minor isEqualToNumber:@58605]) {
-        self.offerImage.image = [UIImage imageNamed:@"purpleNotificationBig"];
+        self.offerImage.image = [UIImage imageNamed:@"blue_medium"];
         
     } else if ([minor isEqualToNumber:@18108]) {
-        self.offerImage.image = [UIImage imageNamed:@"greenNotificationBig"];
+        self.offerImage.image = [UIImage imageNamed:@"green_small"];
         
     } else if ([minor isEqualToNumber:@57466]) {
-        self.offerImage.image = [UIImage imageNamed:@"purpleNotificationBig"];
+        self.offerImage.image = [UIImage imageNamed:@"purple_large"];
         
     }
     
@@ -137,6 +136,18 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.BakerBeacon";
 
 #pragma mark - CLLocationManagerDelegate methods
 
+//- (void)locationManager:(CLLocationManager *)manager
+//	  didDetermineState:(CLRegionState)state
+//              forRegion:(CLBeaconRegion *)region
+//{
+//    NSLog(@"Region %@ identifier", region.identifier );
+//    
+//    if (CLRegionStateInside == state) {
+//        [self setProductOffer:region.minor];
+//    }
+//    
+//}
+
 - (void)locationManager:(CLLocationManager *)manager
         didRangeBeacons:(NSArray *)beacons
                inRegion:(CLRegion *)region {
@@ -162,12 +173,11 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.BakerBeacon";
             [self setProductOffer:_nearestBeacon.minor];
             
         } else {
-            self.offerImage.image = [UIImage imageNamed:@"purpleNotificationBig"];
+            self.offerImage.image = [UIImage imageNamed:@"iconBeacon"];
         }
         
     } else {
         NSLog(@"No beacons found!");
-        
     }
     
     
@@ -213,7 +223,7 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.BakerBeacon";
     notification.alertBody = [NSString stringWithFormat:@"You're outside %@", region.identifier];
     
     if (_isFBdataFetched) {
-        [self postDataToSpreadsheet:region];
+        [self postDataToSpreadsheet:_nearestBeacon];
     }
     
     [_locationManager stopRangingBeaconsInRegion:region];
@@ -318,7 +328,7 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.BakerBeacon";
 # define FB_EMAIL       @"entry.2006994834"
 
 
-- (void)postDataToSpreadsheet:(CLBeaconRegion *)region
+- (void)postDataToSpreadsheet:(CLBeacon *)nearestBeacon
 {
     NSURL *url = [[NSURL alloc] initWithString:kSpreadsheetURL];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -327,9 +337,9 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.BakerBeacon";
     NSLog(@"%@ User Data", self.userData);
     
     NSString *params = [NSString stringWithFormat:@"%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@",
-                        EST_UUID, region.proximityUUID.UUIDString,
-                        MAJOR, region.major,
-                        MINOR, region.minor,
+                        EST_UUID, nearestBeacon.proximityUUID.UUIDString,
+                        MAJOR, nearestBeacon.major.stringValue,
+                        MINOR, nearestBeacon.minor.stringValue,
                         RSSI, [self proxmityString:_nearestBeacon.proximity],
                         ENTRY_TIME, [self dateStringWithDSTOffset:self.regionEntryTime],
                         EXIT_TIME, [self dateStringWithDSTOffset:self.regionExitTime],
@@ -343,21 +353,22 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.BakerBeacon";
     [request setHTTPBody:paramsData];
     
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    [NSURLConnection sendAsynchronousRequest:request
-                                       queue:queue
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-                               
-                               if (data.length > 0 && connectionError == nil) {
-                                   NSLog(@"== Successfully posted data ==");
-                                   
-                               } else if (data.length == 0 && connectionError == nil) {
-                                   NSLog(@"No data");
-                                   
-                               } else if (connectionError != nil) {
-                                   NSLog(@"Connection Error %@", connectionError);
-                               }
-                               
-                           }];
+    
+    [NSURLConnection
+         sendAsynchronousRequest:request
+                           queue:queue
+               completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                   
+                   if (data.length > 0 && connectionError == nil) {
+                       NSLog(@"== Successfully posted data ==");
+                       
+                   } else if (data.length == 0 && connectionError == nil) {
+                       NSLog(@"No data");
+                       
+                   } else if (connectionError != nil) {
+                       NSLog(@"Connection Error %@", connectionError);
+                   }
+               }];
     
 }
 
