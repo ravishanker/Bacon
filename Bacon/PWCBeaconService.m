@@ -26,6 +26,8 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
 
 @property (nonatomic, strong) NSDate * regionEntryTime;
 @property (nonatomic, strong) NSDate * regionExitTime;
+@property NSTimeInterval timeInterval;
+
 
 @property (nonatomic, strong) PWCUser *user;
 @property (nonatomic, strong) PWCGoogleDriveService *gDriveService;
@@ -98,11 +100,12 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
 //
 //}
 
+#define FIVE_SECONDS 5.0
+
 - (void)locationManager:(CLLocationManager *)manager
         didRangeBeacons:(NSArray *)beacons
                inRegion:(CLRegion *)region
 {
-    
     
     if (beacons.count > 0) {
         NSLog(@"Found beacons! %@", beacons);
@@ -117,12 +120,35 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
               (long)_nearestBeacon.rssi);
         
         
-        if (CLProximityImmediate == _nearestBeacon.proximity || CLProximityNear == _nearestBeacon.proximity) {
+        // Moving between beacons
+        if (CLProximityImmediate == _nearestBeacon.proximity ||
+            CLProximityNear == _nearestBeacon.proximity) {
+            
+            // update UI with offer
             [[NSNotificationCenter defaultCenter] postNotificationName:@"beacon" object:_nearestBeacon];
-        
+            
+            if ([_currentBeacon.minor isEqualToNumber:_nearestBeacon.minor]) {
+                // still at the same beacon
+                _timeInterval = [[NSDate date] timeIntervalSinceDate:_regionEntryTime];
+
+            } else {
+                // when moved to another beacon
+                if (_timeInterval < FIVE_SECONDS) {
+                    // do not post data as it is considered insignificant
+                } else {
+                    // if more than 5 seconds at the beacon post data to spreadsheet
+                    _regionExitTime = [NSDate date];
+                    
+                    [_gDriveService postToSpreadsheet:_nearestBeacon
+                                        withEntryTime:_regionEntryTime
+                                       regionExitTime:_regionExitTime];
+                }
+                _regionEntryTime = [NSDate date];
+                _currentBeacon = _nearestBeacon;
+            }
+            
         } else {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"beacon" object:nil];
-
         }
         
     } else {
@@ -136,21 +162,26 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
 {
     NSLog(@"Inside Region %@", region.identifier);
     
-    [_locationManager startRangingBeaconsInRegion:region];
-    
-    // A user can transition in or out of a region while the application is not running.
-    // When this happens CoreLocation will launch the application momentarily, call this delegate method
-    // and we will let the user know via a local notification.
-    UILocalNotification *notification = [[UILocalNotification alloc] init];
-    
     _regionEntryTime = [NSDate date];
     
     PWCUser *user = [[PWCUser alloc] initWithFBGraphUser];
     NSLog(@"User in %@", user.description);
     
+    if (!_gDriveService) {
+        _gDriveService = [[PWCGoogleDriveService alloc] init];
+    }
+
+    // A user can transition in or out of a region while the application is not running.
+    // When this happens CoreLocation will launch the application momentarily, call this delegate method
+    // and we will let the user know via a local notification.
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    
     notification.alertBody = [NSString stringWithFormat:@"Hi Welcome to Holden.  We've great offers for you"];
     
     [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+    
+    [_locationManager startRangingBeaconsInRegion:region];
+
     
 }
 
@@ -168,13 +199,13 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
     
     NSLog(@"%@ User in exit region", [PWCUser getUser].description);
     
-    if (!_gDriveService) {
-        _gDriveService = [[PWCGoogleDriveService alloc] init];
-    }
-    
-    [_gDriveService postToSpreadsheet:_nearestBeacon
-                        withEntryTime:_regionEntryTime
-                       regionExitTime:_regionExitTime];
+//    if (!_gDriveService) {
+//        _gDriveService = [[PWCGoogleDriveService alloc] init];
+//    }
+//    
+//    [_gDriveService postToSpreadsheet:_nearestBeacon
+//                        withEntryTime:_regionEntryTime
+//                       regionExitTime:_regionExitTime];
     
     [_locationManager stopRangingBeaconsInRegion:region];
     

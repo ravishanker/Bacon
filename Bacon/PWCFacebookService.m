@@ -31,7 +31,7 @@
 {
     // Login or get user data from Facebook
     NSArray *permissions = @[@"basic_info", @"email"];
-    NSLog(@"%@", self.session.isOpen ? @"YES" : @"NO");
+//    NSLog(@"%@", self.session.isOpen ? @"YES" : @"NO");
     
     if (self.session.isOpen) {
         
