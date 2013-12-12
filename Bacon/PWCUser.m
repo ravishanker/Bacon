@@ -73,7 +73,8 @@
 
 + (NSString *)getPathToArchive
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(
+                            NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [paths objectAtIndex:0];
     
     return [docsDir stringByAppendingPathComponent:@"user.model"];
@@ -94,7 +95,9 @@
 
 -(NSString *)description;
 {
-    return [NSString stringWithFormat:@"[User: \n\tid: %@ \n\tname: %@ \n\tgender: %@ \n\temail: %@\n]", self.Id, self.fullName, self.gender, self.email];
+    return [NSString
+            stringWithFormat:@"[User: \n\tid: %@ \n\tname: %@ \n\tgender: %@ \n\temail: %@\n]",
+            self.Id, self.fullName, self.gender, self.email];
 }
 
 @end

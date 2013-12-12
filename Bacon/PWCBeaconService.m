@@ -30,8 +30,6 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
 @property (nonatomic, strong) PWCUser *user;
 @property (nonatomic, strong) PWCGoogleDriveService *gDriveService;
 
-//@property (nonatomic, strong) PWCViewController *pvc;
-
 @end
 
 @implementation PWCBeaconService
@@ -150,8 +148,6 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
     PWCUser *user = [[PWCUser alloc] initWithFBGraphUser];
     NSLog(@"User in %@", user.description);
     
-//    NSLog(@"Region Entry Time: %@", self.regionEntryTime);
-    
     notification.alertBody = [NSString stringWithFormat:@"Hi Welcome to Holden.  We've great offers for you"];
     
     [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
@@ -164,9 +160,7 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
     NSLog(@"Outside Region %@", region.identifier);
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     
-//    _pvc.offerImage.image = [UIImage imageNamed:@"iconBeacon"];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"beacon" object:nil];
-
     
     _regionExitTime = [NSDate date];
     
