@@ -121,9 +121,9 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
         
         
         // Moving between beacons
-        if (CLProximityImmediate == _nearestBeacon.proximity ||
-            CLProximityNear == _nearestBeacon.proximity) {
-            
+//        if (CLProximityImmediate == _nearestBeacon.proximity ||
+//            CLProximityNear == _nearestBeacon.proximity) {
+        
             // update UI with offer
             [[NSNotificationCenter defaultCenter] postNotificationName:@"beacon" object:_nearestBeacon];
             
@@ -145,11 +145,14 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
                 }
                 _regionEntryTime = [NSDate date];
                 _currentBeacon = _nearestBeacon;
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"beacon" object:nil];
+
             }
             
-        } else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"beacon" object:nil];
-        }
+//        } else {
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"beacon" object:nil];
+//        }
         
     } else {
         NSLog(@"No beacons found!");
