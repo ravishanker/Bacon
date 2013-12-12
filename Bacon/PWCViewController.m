@@ -35,6 +35,11 @@
                                                  name:@"beacon"
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setLatestOffer:)
+                                                 name:@"offer"
+                                               object:nil];
+    
 }
 
 - (void)viewDidLoad
@@ -69,6 +74,11 @@
         self.offerImage.image = [UIImage imageNamed:@"iconBeacon"];
     }
     
+}
+
+- (void)setLatestOffer:(NSNotification *)note
+{
+    self.offerImage.image = [UIImage imageNamed:@"big_red_sale.jpg"];
 }
 
 

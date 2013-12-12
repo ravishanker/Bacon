@@ -101,6 +101,7 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
 //}
 
 #define FIVE_SECONDS 5.0
+#define TEN_SECONDS 10.0
 
 - (void)locationManager:(CLLocationManager *)manager
         didRangeBeacons:(NSArray *)beacons
@@ -121,8 +122,8 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
         
         
         // Moving between beacons
-//        if (CLProximityImmediate == _nearestBeacon.proximity ||
-//            CLProximityNear == _nearestBeacon.proximity) {
+        if (CLProximityImmediate == _nearestBeacon.proximity ||
+            CLProximityNear == _nearestBeacon.proximity) {
         
             // update UI with offer
             [[NSNotificationCenter defaultCenter] postNotificationName:@"beacon" object:_nearestBeacon];
@@ -130,12 +131,15 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
             if ([_currentBeacon.minor isEqualToNumber:_nearestBeacon.minor]) {
                 // still at the same beacon
                 _timeInterval = [[NSDate date] timeIntervalSinceDate:_regionEntryTime];
+                
+                if (_timeInterval > TEN_SECONDS) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"offer" object:_nearestBeacon];
+
+                }
 
             } else {
                 // when moved to another beacon
-                if (_timeInterval < FIVE_SECONDS) {
-                    // do not post data as it is considered insignificant
-                } else {
+                if (_timeInterval > FIVE_SECONDS) {
                     // if more than 5 seconds at the beacon post data to spreadsheet
                     _regionExitTime = [NSDate date];
                     
@@ -146,13 +150,12 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
                 _regionEntryTime = [NSDate date];
                 _currentBeacon = _nearestBeacon;
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"beacon" object:nil];
-
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"beacon" object:nil];
             }
             
-//        } else {
-//            [[NSNotificationCenter defaultCenter] postNotificationName:@"beacon" object:nil];
-//        }
+        } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"beacon" object:nil];
+        }
         
     } else {
         NSLog(@"No beacons found!");

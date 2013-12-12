@@ -29,6 +29,7 @@
 		41864D4E1857DD750080112B /* PWCFacebookService.m in Sources */ = {isa = PBXBuildFile; fileRef = 41864D4D1857DD750080112B /* PWCFacebookService.m */; };
 		41864D521857E1700080112B /* PWCGoogleDriveService.m in Sources */ = {isa = PBXBuildFile; fileRef = 41864D511857E1700080112B /* PWCGoogleDriveService.m */; };
 		41CFE1941858142500D0A3A3 /* PWCBeaconService.m in Sources */ = {isa = PBXBuildFile; fileRef = 41CFE1931858142500D0A3A3 /* PWCBeaconService.m */; };
+		41CFE196185A785600D0A3A3 /* big_red_sale.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 41CFE195185A785600D0A3A3 /* big_red_sale.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +73,7 @@
 		41864D511857E1700080112B /* PWCGoogleDriveService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PWCGoogleDriveService.m; sourceTree = "<group>"; };
 		41CFE1921858142500D0A3A3 /* PWCBeaconService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWCBeaconService.h; sourceTree = "<group>"; };
 		41CFE1931858142500D0A3A3 /* PWCBeaconService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PWCBeaconService.m; sourceTree = "<group>"; };
+		41CFE195185A785600D0A3A3 /* big_red_sale.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = big_red_sale.jpg; sourceTree = "<group>"; };
 		CD50AE7FF65C4E3CB58AFF92 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		FAB90F81DEC244B6AC285BAE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -155,6 +157,7 @@
 		41864D0D185577120080112B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				41CFE195185A785600D0A3A3 /* big_red_sale.jpg */,
 				41864D0E185577120080112B /* Bacon-Info.plist */,
 				41864D0F185577120080112B /* InfoPlist.strings */,
 				41864D12185577120080112B /* main.m */,
@@ -301,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				41864D1D185577120080112B /* Main_iPad.storyboard in Resources */,
+				41CFE196185A785600D0A3A3 /* big_red_sale.jpg in Resources */,
 				41864D22185577120080112B /* Images.xcassets in Resources */,
 				41864D1A185577120080112B /* Main_iPhone.storyboard in Resources */,
 				41864D11185577120080112B /* InfoPlist.strings in Resources */,
