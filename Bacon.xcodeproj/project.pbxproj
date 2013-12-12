@@ -25,6 +25,10 @@
 		41864D35185577120080112B /* BaconTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 41864D34185577120080112B /* BaconTests.m */; };
 		41864D3F1855851E0080112B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41864D3E1855851E0080112B /* CoreBluetooth.framework */; };
 		41864D41185585280080112B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41864D40185585280080112B /* CoreLocation.framework */; };
+		41864D481857B1EE0080112B /* PWCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 41864D471857B1EE0080112B /* PWCUser.m */; };
+		41864D4E1857DD750080112B /* PWCFacebookService.m in Sources */ = {isa = PBXBuildFile; fileRef = 41864D4D1857DD750080112B /* PWCFacebookService.m */; };
+		41864D521857E1700080112B /* PWCGoogleDriveService.m in Sources */ = {isa = PBXBuildFile; fileRef = 41864D511857E1700080112B /* PWCGoogleDriveService.m */; };
+		41CFE1941858142500D0A3A3 /* PWCBeaconService.m in Sources */ = {isa = PBXBuildFile; fileRef = 41CFE1931858142500D0A3A3 /* PWCBeaconService.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +64,14 @@
 		41864D34185577120080112B /* BaconTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaconTests.m; sourceTree = "<group>"; };
 		41864D3E1855851E0080112B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		41864D40185585280080112B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		41864D461857B1EE0080112B /* PWCUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWCUser.h; sourceTree = "<group>"; };
+		41864D471857B1EE0080112B /* PWCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PWCUser.m; sourceTree = "<group>"; };
+		41864D4C1857DD750080112B /* PWCFacebookService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWCFacebookService.h; sourceTree = "<group>"; };
+		41864D4D1857DD750080112B /* PWCFacebookService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PWCFacebookService.m; sourceTree = "<group>"; };
+		41864D501857E1700080112B /* PWCGoogleDriveService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWCGoogleDriveService.h; sourceTree = "<group>"; };
+		41864D511857E1700080112B /* PWCGoogleDriveService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PWCGoogleDriveService.m; sourceTree = "<group>"; };
+		41CFE1921858142500D0A3A3 /* PWCBeaconService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWCBeaconService.h; sourceTree = "<group>"; };
+		41CFE1931858142500D0A3A3 /* PWCBeaconService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PWCBeaconService.m; sourceTree = "<group>"; };
 		CD50AE7FF65C4E3CB58AFF92 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		FAB90F81DEC244B6AC285BAE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -130,10 +142,10 @@
 			children = (
 				41864D15185577120080112B /* PWCAppDelegate.h */,
 				41864D16185577120080112B /* PWCAppDelegate.m */,
-				41864D18185577120080112B /* Main_iPhone.storyboard */,
-				41864D1B185577120080112B /* Main_iPad.storyboard */,
-				41864D1E185577120080112B /* PWCViewController.h */,
-				41864D1F185577120080112B /* PWCViewController.m */,
+				41864D491857B2050080112B /* Models */,
+				41864D4A1857D7480080112B /* Views */,
+				41864D4B1857D7640080112B /* Controllers */,
+				41864D4F1857DD7D0080112B /* Services */,
 				41864D21185577120080112B /* Images.xcassets */,
 				41864D0D185577120080112B /* Supporting Files */,
 			);
@@ -167,6 +179,46 @@
 				41864D31185577120080112B /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		41864D491857B2050080112B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				41864D461857B1EE0080112B /* PWCUser.h */,
+				41864D471857B1EE0080112B /* PWCUser.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		41864D4A1857D7480080112B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				41864D18185577120080112B /* Main_iPhone.storyboard */,
+				41864D1B185577120080112B /* Main_iPad.storyboard */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		41864D4B1857D7640080112B /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				41864D1E185577120080112B /* PWCViewController.h */,
+				41864D1F185577120080112B /* PWCViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		41864D4F1857DD7D0080112B /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				41864D4C1857DD750080112B /* PWCFacebookService.h */,
+				41864D4D1857DD750080112B /* PWCFacebookService.m */,
+				41864D501857E1700080112B /* PWCGoogleDriveService.h */,
+				41864D511857E1700080112B /* PWCGoogleDriveService.m */,
+				41CFE1921858142500D0A3A3 /* PWCBeaconService.h */,
+				41CFE1931858142500D0A3A3 /* PWCBeaconService.m */,
+			);
+			name = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -304,8 +356,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				41864D13185577120080112B /* main.m in Sources */,
+				41864D481857B1EE0080112B /* PWCUser.m in Sources */,
+				41864D521857E1700080112B /* PWCGoogleDriveService.m in Sources */,
+				41CFE1941858142500D0A3A3 /* PWCBeaconService.m in Sources */,
 				41864D20185577120080112B /* PWCViewController.m in Sources */,
 				41864D17185577120080112B /* PWCAppDelegate.m in Sources */,
+				41864D4E1857DD750080112B /* PWCFacebookService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,12 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <CoreLocation/CoreLocation.h>
-#import <FacebookSDK/Facebook.h>
 
-@interface PWCViewController : UIViewController <CLLocationManagerDelegate>
-
-@property (strong, nonatomic) FBSession *session;
+@interface PWCViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIImageView *offerImage;
 
