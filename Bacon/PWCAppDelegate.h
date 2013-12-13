@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
-
+#import <Mixpanel/Mixpanel.h>
 
 @interface PWCAppDelegate : UIResponder <UIApplicationDelegate>
 

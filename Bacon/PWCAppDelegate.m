@@ -8,11 +8,19 @@
 
 #import "PWCAppDelegate.h"
 
+
+#define MIXPANEL_TOKEN @"021e8e7eafed8aad6e21263132323004"
+
 @implementation PWCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    // Mixpanel project token, MIXPANEL_TOKEN
+    [Mixpanel sharedInstanceWithToken:MIXPANEL_TOKEN];
+    
+    
     return YES;
 }
 							
