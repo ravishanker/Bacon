@@ -155,6 +155,17 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
             
         } else {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"beacon" object:nil];
+            
+            // when moved to no immediate or near beacon region
+            if (_timeInterval > FIVE_SECONDS) {
+                // if more than 5 seconds at the beacon post data to spreadsheet
+                _regionExitTime = [NSDate date];
+                
+                [_gDriveService postToSpreadsheet:_nearestBeacon
+                                    withEntryTime:_regionEntryTime
+                                   regionExitTime:_regionExitTime];
+            }
+
         }
         
     } else {
