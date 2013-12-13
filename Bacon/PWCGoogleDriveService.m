@@ -61,7 +61,7 @@ static NSString * const kSpreadsheetURL =
     NSString *params = [NSString stringWithFormat:@"%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@",
                         EST_UUID, nearestBeacon.proximityUUID.UUIDString,
                         MAJOR, nearestBeacon.major.stringValue,
-                        MINOR, nearestBeacon.minor.stringValue,
+                        MINOR, [self beaconColor:nearestBeacon], //nearestBeacon.minor.stringValue,
                         RSSI, [self proxmityString:nearestBeacon.proximity],
                         ENTRY_TIME, [self dateStringWithDSTOffset:entryTime],
                         EXIT_TIME, [self dateStringWithDSTOffset:exitTime],
@@ -127,6 +127,24 @@ static NSString * const kSpreadsheetURL =
     }
     
     return proximityString;
+}
+
+- (NSString *)beaconColor:(CLBeacon *)beacon
+{
+    NSString *beaconColour;
+    
+    if ([beacon.minor isEqualToNumber:@58605]) {
+        beaconColour = @"Blue iBeacon";
+        
+    } else if ([beacon.minor isEqualToNumber:@18108]) {
+        beaconColour = @"Green iBeacon";
+        
+    } else if ([beacon.minor isEqualToNumber:@57466]) {
+        beaconColour = @"Purple iBeacon";
+        
+    }
+    
+    return beaconColour;
 }
 
 

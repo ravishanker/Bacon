@@ -36,6 +36,11 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
 
 @implementation PWCBeaconService
 
+{
+    // to keep track of posts and avoid duplicates what at a beacon
+    int postCount;
+}
+
 - (id)init
 {
     self = [super init];
@@ -120,6 +125,7 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
               _nearestBeacon.accuracy,
               (long)_nearestBeacon.rssi);
         
+// Scenario 1///////////////////////////////////////////////////////////////////
         
         // Moving between beacons
         if (CLProximityImmediate == _nearestBeacon.proximity ||
@@ -132,21 +138,35 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
                 // still at the same beacon
                 _timeInterval = [[NSDate date] timeIntervalSinceDate:_regionEntryTime];
                 
-                if (_timeInterval > TEN_SECONDS) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"offer" object:_nearestBeacon];
-
-                }
-
-            } else {
                 // when moved to another beacon
-                if (_timeInterval > FIVE_SECONDS) {
+                if (_timeInterval > FIVE_SECONDS && postCount == 0 ) {
                     // if more than 5 seconds at the beacon post data to spreadsheet
                     _regionExitTime = [NSDate date];
                     
                     [_gDriveService postToSpreadsheet:_nearestBeacon
                                         withEntryTime:_regionEntryTime
                                        regionExitTime:_regionExitTime];
+                    
+                    postCount = 1;
                 }
+
+                
+                if (_timeInterval > TEN_SECONDS) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"offer" object:_nearestBeacon];
+
+                }
+
+            } else {
+//                // when moved to another beacon
+//                if (_timeInterval > FIVE_SECONDS) {
+//                    // if more than 5 seconds at the beacon post data to spreadsheet
+//                    _regionExitTime = [NSDate date];
+//                    
+//                    [_gDriveService postToSpreadsheet:_nearestBeacon
+//                                        withEntryTime:_regionEntryTime
+//                                       regionExitTime:_regionExitTime];
+//                }
+                postCount = 0;
                 _regionEntryTime = [NSDate date];
                 _currentBeacon = _nearestBeacon;
                 
@@ -157,20 +177,23 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
             [[NSNotificationCenter defaultCenter] postNotificationName:@"beacon" object:nil];
             
             // when moved to no immediate or near beacon region
-            if (_timeInterval > FIVE_SECONDS) {
-                // if more than 5 seconds at the beacon post data to spreadsheet
-                _regionExitTime = [NSDate date];
-                
-                [_gDriveService postToSpreadsheet:_nearestBeacon
-                                    withEntryTime:_regionEntryTime
-                                   regionExitTime:_regionExitTime];
-            }
+//            if (_timeInterval > FIVE_SECONDS) {
+//                // if more than 5 seconds at the beacon post data to spreadsheet
+//                _regionExitTime = [NSDate date];
+//                
+//                [_gDriveService postToSpreadsheet:_nearestBeacon
+//                                    withEntryTime:_regionEntryTime
+//                                   regionExitTime:_regionExitTime];
+//            }
 
         }
         
     } else {
         NSLog(@"No beacons found!");
     }
+    
+// Scenario 2 //////////////////////////////////////////////////////////////////
+    
     
 }
 
