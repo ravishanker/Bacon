@@ -77,7 +77,7 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
             [_locationManager requestStateForRegion:_beaconRegion];
             
             // Start ranging for beacons
-//            [_locationManager startRangingBeaconsInRegion:_beaconRegion];
+            [_locationManager startRangingBeaconsInRegion:_beaconRegion];
             
         } else {
             NSLog(@"This device does not support monitoring beacon regions");
