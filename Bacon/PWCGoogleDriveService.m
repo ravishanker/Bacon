@@ -64,7 +64,7 @@ static NSString * const kSpreadsheetURL =
     [mixpanel registerSuperProperties:@{@"fb_id": user.Id,
                                             @"fb_ame": user.fullName,
                                             @"gender": user.gender,
-                                            @"email": user.email}];
+                                            @"email": user.email }];
     
 //    [mixpanel createAlias:user.email forDistinctID:mixpanel.distinctId];
     [mixpanel identify:mixpanel.distinctId];
@@ -76,7 +76,10 @@ static NSString * const kSpreadsheetURL =
     // post beacon info each time
     [mixpanel track:@"Beacon" properties:@{@"est_uuid": nearestBeacon.proximityUUID.UUIDString,
                                            @"major": nearestBeacon.major.stringValue,
-                                           @"minor": [self beaconColor:nearestBeacon]}];
+                                           @"minor": [self beaconColor:nearestBeacon],
+                                           @"entry_time": [self dateStringWithDSTOffset:entryTime],
+                                           @"exit_time": [self dateStringWithDSTOffset:exitTime],
+                                           @"dwell_time": [NSString stringWithFormat:@"%.2f", [[NSDate date] timeIntervalSinceDate:entryTime]] }];
 
 //    NSLog(@"%@ User in gDrive region", user.description);
     
