@@ -66,7 +66,7 @@ static NSString * const kSpreadsheetURL =
                                             @"gender": user.gender,
                                             @"email": user.email}];
     
-    [mixpanel createAlias:user.email forDistinctID:mixpanel.distinctId];
+//    [mixpanel createAlias:user.email forDistinctID:mixpanel.distinctId];
     [mixpanel identify:mixpanel.distinctId];
     [mixpanel.people set:@{@"fb_id": user.Id,
                            @"fb_ame": user.fullName,
