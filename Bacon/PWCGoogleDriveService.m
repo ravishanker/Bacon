@@ -8,6 +8,7 @@
 
 #import "PWCGoogleDriveService.h"
 #import "PWCUser.h"
+#import <Mixpanel/Mixpanel.h>
 
 static NSString * const kSpreadsheetURL =
 @"https://docs.google.com/forms/d/1ctrAHWmIz-j_47LjRdWPnzHE8ELHjE_MW1X984p3csw/formResponse";
@@ -55,9 +56,30 @@ static NSString * const kSpreadsheetURL =
     [request setHTTPMethod:@"POST"];
     
     PWCUser *user = [PWCUser getUser];
+    
+    // Track stats with Mixpanel
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
+    // register user properties once
+    [mixpanel registerSuperProperties:@{@"fb_id": user.Id,
+                                            @"fb_ame": user.fullName,
+                                            @"gender": user.gender,
+                                            @"email": user.email}];
+    
+    [mixpanel createAlias:user.email forDistinctID:mixpanel.distinctId];
+    [mixpanel identify:mixpanel.distinctId];
+    [mixpanel.people set:@{@"fb_id": user.Id,
+                           @"fb_ame": user.fullName,
+                           @"gender": user.gender,
+                           @"email": user.email}];
+    
+    // post beacon info each time
+    [mixpanel track:@"Beacon" properties:@{@"est_uuid": nearestBeacon.proximityUUID.UUIDString,
+                                           @"major": nearestBeacon.major.stringValue,
+                                           @"minor": [self beaconColor:nearestBeacon]}];
 
-    NSLog(@"%@ User in gDrive region", user.description);
-        
+//    NSLog(@"%@ User in gDrive region", user.description);
+    
     NSString *params = [NSString stringWithFormat:@"%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@",
                         EST_UUID, nearestBeacon.proximityUUID.UUIDString,
                         MAJOR, nearestBeacon.major.stringValue,

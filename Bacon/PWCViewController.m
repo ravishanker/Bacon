@@ -55,6 +55,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 //- (void)setProductOffer:(NSNumber *)minor
 - (void)setProductOffer:(NSNotification *)note

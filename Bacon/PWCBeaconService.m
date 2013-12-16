@@ -32,6 +32,7 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
 @property (nonatomic, strong) PWCUser *user;
 @property (nonatomic, strong) PWCGoogleDriveService *gDriveService;
 
+
 @end
 
 @implementation PWCBeaconService
@@ -39,6 +40,7 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
 {
     // to keep track of posts and avoid duplicates what at a beacon
     int postCount;
+    
 }
 
 - (id)init
@@ -46,7 +48,7 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
     self = [super init];
     
     if (self) {
-                
+                        
         _locationManager = [[CLLocationManager alloc] init];
         _locationManager.delegate = self;
         //    _locationManager.distanceFilter = 2.0; // two meters
@@ -75,7 +77,7 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
             [_locationManager requestStateForRegion:_beaconRegion];
             
             // Start ranging for beacons
-            [_locationManager startRangingBeaconsInRegion:_beaconRegion];
+//            [_locationManager startRangingBeaconsInRegion:_beaconRegion];
             
         } else {
             NSLog(@"This device does not support monitoring beacon regions");
@@ -146,6 +148,7 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
                     [_gDriveService postToSpreadsheet:_nearestBeacon
                                         withEntryTime:_regionEntryTime
                                        regionExitTime:_regionExitTime];
+                    
                     
                     postCount = 1;
                 }

@@ -20,6 +20,12 @@
     // Mixpanel project token, MIXPANEL_TOKEN
     [Mixpanel sharedInstanceWithToken:MIXPANEL_TOKEN];
     
+    // Ask user permission to receive push notifications
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+                                             (UIRemoteNotificationTypeBadge |
+                                              UIRemoteNotificationTypeSound |
+                                              UIRemoteNotificationTypeAlert)];
+    
     
     return YES;
 }
@@ -70,5 +76,32 @@
     // attempt to extract a token from the url
     return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
 }
+
+// Add the token to Mixpanel's people profile
+- (void)application:(UIApplication *)application
+didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
+    [mixpanel identify:mixpanel.distinctId];
+    [mixpanel.people addPushDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application
+didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    // Show alert for push notifications recevied while the
+    // app is running
+    NSString *message = [[userInfo objectForKey:@"aps"]
+                         objectForKey:@"alert"];
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@""
+                          message:message
+                          delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    [alert show];
+}
+
 
 @end
