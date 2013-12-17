@@ -30,6 +30,14 @@
 		41864D521857E1700080112B /* PWCGoogleDriveService.m in Sources */ = {isa = PBXBuildFile; fileRef = 41864D511857E1700080112B /* PWCGoogleDriveService.m */; };
 		41CFE1941858142500D0A3A3 /* PWCBeaconService.m in Sources */ = {isa = PBXBuildFile; fileRef = 41CFE1931858142500D0A3A3 /* PWCBeaconService.m */; };
 		41CFE196185A785600D0A3A3 /* big_red_sale.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 41CFE195185A785600D0A3A3 /* big_red_sale.jpg */; };
+		41CFE199185FC96100D0A3A3 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41CFE198185FC96100D0A3A3 /* CoreData.framework */; };
+		41CFE19B185FC96F00D0A3A3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41CFE19A185FC96F00D0A3A3 /* Security.framework */; };
+		41CFE19D185FC98100D0A3A3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41CFE19C185FC98100D0A3A3 /* SystemConfiguration.framework */; };
+		41CFE19F185FC99B00D0A3A3 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41CFE19E185FC99B00D0A3A3 /* CoreTelephony.framework */; };
+		41CFE1A1185FC9BD00D0A3A3 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 41CFE1A0185FC9BD00D0A3A3 /* libsqlite3.dylib */; };
+		41CFE1A3185FC9CC00D0A3A3 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 41CFE1A2185FC9CC00D0A3A3 /* libz.dylib */; };
+		41CFE1A5185FC9D800D0A3A3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41CFE1A4185FC9D800D0A3A3 /* QuartzCore.framework */; };
+		41CFE1A7185FC9E400D0A3A3 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41CFE1A6185FC9E400D0A3A3 /* AdSupport.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +82,14 @@
 		41CFE1921858142500D0A3A3 /* PWCBeaconService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWCBeaconService.h; sourceTree = "<group>"; };
 		41CFE1931858142500D0A3A3 /* PWCBeaconService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PWCBeaconService.m; sourceTree = "<group>"; };
 		41CFE195185A785600D0A3A3 /* big_red_sale.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = big_red_sale.jpg; sourceTree = "<group>"; };
+		41CFE198185FC96100D0A3A3 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		41CFE19A185FC96F00D0A3A3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		41CFE19C185FC98100D0A3A3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		41CFE19E185FC99B00D0A3A3 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		41CFE1A0185FC9BD00D0A3A3 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		41CFE1A2185FC9CC00D0A3A3 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		41CFE1A4185FC9D800D0A3A3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		41CFE1A6185FC9E400D0A3A3 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		CD50AE7FF65C4E3CB58AFF92 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		FAB90F81DEC244B6AC285BAE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -83,6 +99,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41CFE1A7185FC9E400D0A3A3 /* AdSupport.framework in Frameworks */,
+				41CFE1A5185FC9D800D0A3A3 /* QuartzCore.framework in Frameworks */,
+				41CFE1A3185FC9CC00D0A3A3 /* libz.dylib in Frameworks */,
+				41CFE1A1185FC9BD00D0A3A3 /* libsqlite3.dylib in Frameworks */,
+				41CFE19F185FC99B00D0A3A3 /* CoreTelephony.framework in Frameworks */,
+				41CFE19D185FC98100D0A3A3 /* SystemConfiguration.framework in Frameworks */,
+				41CFE19B185FC96F00D0A3A3 /* Security.framework in Frameworks */,
+				41CFE199185FC96100D0A3A3 /* CoreData.framework in Frameworks */,
 				41864D41185585280080112B /* CoreLocation.framework in Frameworks */,
 				41864D3F1855851E0080112B /* CoreBluetooth.framework in Frameworks */,
 				41864D09185577120080112B /* CoreGraphics.framework in Frameworks */,
@@ -128,6 +152,14 @@
 		41864D05185577120080112B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				41CFE1A6185FC9E400D0A3A3 /* AdSupport.framework */,
+				41CFE1A4185FC9D800D0A3A3 /* QuartzCore.framework */,
+				41CFE1A2185FC9CC00D0A3A3 /* libz.dylib */,
+				41CFE1A0185FC9BD00D0A3A3 /* libsqlite3.dylib */,
+				41CFE19E185FC99B00D0A3A3 /* CoreTelephony.framework */,
+				41CFE19C185FC98100D0A3A3 /* SystemConfiguration.framework */,
+				41CFE19A185FC96F00D0A3A3 /* Security.framework */,
+				41CFE198185FC96100D0A3A3 /* CoreData.framework */,
 				41864D40185585280080112B /* CoreLocation.framework */,
 				41864D3E1855851E0080112B /* CoreBluetooth.framework */,
 				41864D06185577120080112B /* Foundation.framework */,
@@ -514,8 +546,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Bacon/Bacon-Prefix.pch";
 				INFOPLIST_FILE = "Bacon/Bacon-Info.plist";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -532,8 +566,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Bacon/Bacon-Prefix.pch";
 				INFOPLIST_FILE = "Bacon/Bacon-Info.plist";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

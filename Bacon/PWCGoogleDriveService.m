@@ -9,6 +9,7 @@
 #import "PWCGoogleDriveService.h"
 #import "PWCUser.h"
 #import <Mixpanel/Mixpanel.h>
+//#import <Analytics/Analytics.h>
 
 static NSString * const kSpreadsheetURL =
 @"https://docs.google.com/forms/d/1ctrAHWmIz-j_47LjRdWPnzHE8ELHjE_MW1X984p3csw/formResponse";
@@ -80,6 +81,27 @@ static NSString * const kSpreadsheetURL =
                                            @"entry_time": [self dateStringWithDSTOffset:entryTime],
                                            @"exit_time": [self dateStringWithDSTOffset:exitTime],
                                            @"dwell_time": [NSString stringWithFormat:@"%.2f", [[NSDate date] timeIntervalSinceDate:entryTime]] }];
+    
+//    // Segment.io tracking
+//    Analytics *analytics = [Analytics sharedAnalytics];
+//    
+//    // identify lets you tie a user to their actions and record traits about them.
+//    [analytics identify:user.Id
+//                 traits:@{ @"fb_ame": user.fullName,
+//                         @"gender": user.gender,
+//                         @"email": user.email }];
+//    
+//    // track lets you record the actions your users perform
+//    [analytics track:@"Bacon Region"
+//          properties: @{@"est_uuid": nearestBeacon.proximityUUID.UUIDString,
+//                          @"major": nearestBeacon.major.stringValue,
+//                          @"minor": [self beaconColor:nearestBeacon],
+//                          @"entry_time": [self dateStringWithDSTOffset:entryTime],
+//                          @"exit_time": [self dateStringWithDSTOffset:exitTime],
+//                          @"dwell_time": [NSString stringWithFormat:@"%.2f", [[NSDate date] timeIntervalSinceDate:entryTime]] }];
+//    
+//    // screen lets you record the app screens that your users view.
+//    [analytics screen:@"Beacon Color" properties: @{ @"minor": [self beaconColor:nearestBeacon] }];
 
 //    NSLog(@"%@ User in gDrive region", user.description);
     

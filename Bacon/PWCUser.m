@@ -8,6 +8,15 @@
 
 #import "PWCUser.h"
 
+@interface PWCUser()
+
+@property (copy, nonatomic) NSString * Id;
+@property (copy, nonatomic) NSString * fullName;
+@property (copy, nonatomic) NSString * gender;
+@property (copy, nonatomic) NSString * email;
+
+@end
+
 @implementation PWCUser
 
 - (id)init
@@ -17,7 +26,7 @@
 }
 
 
-- (id)initWithFBGraphUser
+- (instancetype)initWithFBGraphUser
 
 {
     self = [super init];
@@ -49,6 +58,41 @@
     return self;
 }
 
+
+- (BOOL)isEqual:(id)object
+{
+    if (![object isKindOfClass:[PWCUser class] ]) return NO;
+    
+    PWCUser *user = (PWCUser *)object;
+    
+    return (self.Id == user.Id || [self.Id isEqual:user.Id])
+        && (self.fullName == user.fullName || [self.fullName isEqual:user.fullName])
+        && (self.gender == user.gender || [self.gender isEqual:user.gender])
+        && (self.email == user.email || [self.email isEqual:user.email]);
+}
+
+- (NSUInteger)hash
+{
+    return self.Id.hash ^ self.fullName.hash;
+}
+
+-(NSString *)description;
+{
+    return [NSString
+            stringWithFormat:@"[User: \n\tid: %@ \n\tname: %@ \n\tgender: %@ \n\temail: %@\n]",
+            self.Id, self.fullName, self.gender, self.email];
+}
+
+
+#pragma mark NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    return self;
+}
+
+
+#pragma mark NSCoding
 
 - (PWCUser *)initWithCoder:(NSCoder *)aDecoder
 {
@@ -93,11 +137,6 @@
     return [NSKeyedUnarchiver unarchiveObjectWithFile:[PWCUser getPathToArchive]];
 }
 
--(NSString *)description;
-{
-    return [NSString
-            stringWithFormat:@"[User: \n\tid: %@ \n\tname: %@ \n\tgender: %@ \n\temail: %@\n]",
-            self.Id, self.fullName, self.gender, self.email];
-}
+
 
 @end

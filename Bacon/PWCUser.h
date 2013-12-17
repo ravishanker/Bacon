@@ -11,15 +11,15 @@
 //#import "PWCFacebookService.h"
 
 
-@interface PWCUser : NSObject <NSCoding>
+@interface PWCUser : NSObject <NSCoding, NSCopying>
 
-@property (strong, nonatomic) NSString * Id;
-@property (strong, nonatomic) NSString * fullName;
-@property (strong, nonatomic) NSString * gender;
-@property (strong, nonatomic) NSString * email;
+@property (copy, nonatomic, readonly) NSString * Id;
+@property (copy, nonatomic, readonly) NSString * fullName;
+@property (copy, nonatomic, readonly) NSString * gender;
+@property (copy, nonatomic, readonly) NSString * email;
 
 
-- (id)initWithFBGraphUser;
+- (instancetype)initWithFBGraphUser;
 
 + (NSString *)getPathToArchive;
 + (void)saveUser:(PWCUser *)aUser;

@@ -26,6 +26,13 @@
                                               UIRemoteNotificationTypeSound |
                                               UIRemoteNotificationTypeAlert)];
     
+//    // If you want to see debug logs from inside the SDK.
+//    [Analytics debug:YES];
+//    
+//    // Initialize the Analytics instance with the
+//    // write key for bakerbeacon/bacon
+//    [Analytics initializeWithSecret:@"33nqe7auio"];
+    
     
     return YES;
 }

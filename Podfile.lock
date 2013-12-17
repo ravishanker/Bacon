@@ -1,12 +1,15 @@
 PODS:
+  - Analytics (0.8.0)
   - Facebook-iOS-SDK (3.10.0)
   - Mixpanel (2.2.1)
 
 DEPENDENCIES:
+  - Analytics
   - Facebook-iOS-SDK (~> 3.10.0)
   - Mixpanel
 
 SPEC CHECKSUMS:
+  Analytics: 64c4b84c5e119080b3927a7352ba86945a6ecaaa
   Facebook-iOS-SDK: ef402579aeb30cf0c4a6370fb0a927e3dc3059e5
   Mixpanel: 488d700d4f769a351bb61afc7d4cabbdeef506e1
 
