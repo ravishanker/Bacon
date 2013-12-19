@@ -49,6 +49,8 @@
                                           if (!error) {
                                               NSLog(@"== Login Success %@ session, %d status", session, status);
                                               self.session = session;
+                                              _user = [[PWCUser alloc] initWithFBGraphUser];
+
 
                                           } else {
                                               NSLog(@"%@ error!", error);

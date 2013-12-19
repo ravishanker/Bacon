@@ -47,7 +47,7 @@ static NSString * const kSpreadsheetURL =
 # define FB_EMAIL       @"entry.2006994834"
     
     
-- (void)postToSpreadsheet:(CLBeacon *)nearestBeacon
++ (void)postToSpreadsheet:(CLBeacon *)nearestBeacon
             withEntryTime:(NSDate *)entryTime
            regionExitTime:(NSDate *)exitTime
 
@@ -58,29 +58,34 @@ static NSString * const kSpreadsheetURL =
     
     PWCUser *user = [PWCUser getUser];
     
-    // Track stats with Mixpanel
-    Mixpanel *mixpanel = [Mixpanel sharedInstance];
-    
-    // register user properties once
-    [mixpanel registerSuperProperties:@{@"fb_id": user.Id,
+    if (user) {
+        // Track stats with Mixpanel
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        
+        // register user properties once
+        [mixpanel registerSuperProperties:@{@"fb_id": user.Id,
                                             @"fb_ame": user.fullName,
-                                            @"gender": user.gender,
-                                            @"email": user.email }];
+                                            @"gender": user.gender ? user.gender : @"no data",
+                                            @"email": user.email ? user.email : @"no email" }];
+        
+    //    [mixpanel createAlias:user.email forDistinctID:mixpanel.distinctId];
+        [mixpanel identify:mixpanel.distinctId];
+        [mixpanel.people set:@{@"fb_id": user.Id,
+                               @"fb_ame": user.fullName,
+                               @"gender": user.gender ? user.gender : @"no data",
+                               @"email": user.email ? user.email : @"no email"}];
+        
+        // post beacon info each time
+        [mixpanel track:@"Beacon" properties:@{@"est_uuid": nearestBeacon.proximityUUID.UUIDString,
+                                               @"major": nearestBeacon.major.stringValue,
+                                               @"minor": [self beaconColor:nearestBeacon],
+                                               @"entry_time": [self dateStringWithDSTOffset:entryTime],
+                                               @"exit_time": [self dateStringWithDSTOffset:exitTime],
+                                               @"dwell_time": [NSString stringWithFormat:@"%.2f", [[NSDate date] timeIntervalSinceDate:entryTime]] }];
+        
+    }
     
-//    [mixpanel createAlias:user.email forDistinctID:mixpanel.distinctId];
-    [mixpanel identify:mixpanel.distinctId];
-    [mixpanel.people set:@{@"fb_id": user.Id,
-                           @"fb_ame": user.fullName,
-                           @"gender": user.gender,
-                           @"email": user.email}];
-    
-    // post beacon info each time
-    [mixpanel track:@"Beacon" properties:@{@"est_uuid": nearestBeacon.proximityUUID.UUIDString,
-                                           @"major": nearestBeacon.major.stringValue,
-                                           @"minor": [self beaconColor:nearestBeacon],
-                                           @"entry_time": [self dateStringWithDSTOffset:entryTime],
-                                           @"exit_time": [self dateStringWithDSTOffset:exitTime],
-                                           @"dwell_time": [NSString stringWithFormat:@"%.2f", [[NSDate date] timeIntervalSinceDate:entryTime]] }];
+
     
 //    // Segment.io tracking
 //    Analytics *analytics = [Analytics sharedAnalytics];
@@ -108,15 +113,15 @@ static NSString * const kSpreadsheetURL =
     NSString *params = [NSString stringWithFormat:@"%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@&%@=%@",
                         EST_UUID, nearestBeacon.proximityUUID.UUIDString,
                         MAJOR, nearestBeacon.major.stringValue,
-                        MINOR, [self beaconColor:nearestBeacon], //nearestBeacon.minor.stringValue,
-                        RSSI, [self proxmityString:nearestBeacon.proximity],
-                        ENTRY_TIME, [self dateStringWithDSTOffset:entryTime],
-                        EXIT_TIME, [self dateStringWithDSTOffset:exitTime],
+                        MINOR, [PWCGoogleDriveService beaconColor:nearestBeacon], //nearestBeacon.minor.stringValue,
+                        RSSI, [PWCGoogleDriveService proxmityString:nearestBeacon.proximity],
+                        ENTRY_TIME, [PWCGoogleDriveService dateStringWithDSTOffset:entryTime],
+                        EXIT_TIME, [PWCGoogleDriveService dateStringWithDSTOffset:exitTime],
                         DWELL_TIME, [NSString stringWithFormat:@"%.2f", [[NSDate date] timeIntervalSinceDate:entryTime]],
                         FB_ID, user.Id,
                         FB_FULL_NAME, user.fullName,
-                        FB_GENDER, user.gender,
-                        FB_EMAIL, user.email];
+                        FB_GENDER, user.gender ? user.gender : @"no data",
+                        FB_EMAIL, user.email ? user.email : @"no email"];
     
     NSData *paramsData = [params dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPBody:paramsData];
@@ -143,7 +148,7 @@ static NSString * const kSpreadsheetURL =
 
     
 // offset date if daylight saving is on
-- (NSString *)dateStringWithDSTOffset:(NSDate *)date
++ (NSString *)dateStringWithDSTOffset:(NSDate *)date
 {
     NSDateFormatter * df = [[NSDateFormatter alloc] init];
     [df setTimeZone:[NSTimeZone localTimeZone]];
@@ -153,7 +158,7 @@ static NSString * const kSpreadsheetURL =
 }
 
 // relative distance string value to beacon
-- (NSString *)proxmityString:(CLProximity)proximity
++ (NSString *)proxmityString:(CLProximity)proximity
 {
     NSString *proximityString;
     
@@ -176,7 +181,7 @@ static NSString * const kSpreadsheetURL =
     return proximityString;
 }
 
-- (NSString *)beaconColor:(CLBeacon *)beacon
++ (NSString *)beaconColor:(CLBeacon *)beacon
 {
     NSString *beaconColour;
     

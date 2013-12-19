@@ -30,7 +30,7 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
 
 
 @property (nonatomic, strong) PWCUser *user;
-@property (nonatomic, strong) PWCGoogleDriveService *gDriveService;
+//@property (nonatomic, strong) PWCGoogleDriveService *gDriveService;
 
 
 @end
@@ -145,7 +145,7 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
                     // if more than 5 seconds at the beacon post data to spreadsheet
                     _regionExitTime = [NSDate date];
                     
-                    [_gDriveService postToSpreadsheet:_nearestBeacon
+                    [PWCGoogleDriveService postToSpreadsheet:_nearestBeacon
                                         withEntryTime:_regionEntryTime
                                        regionExitTime:_regionExitTime];
                     
@@ -210,9 +210,9 @@ static NSString * const kRegionIdentifier = @"au.com.pwc.Bacon";
     PWCUser *user = [[PWCUser alloc] initWithFBGraphUser];
     NSLog(@"User in %@", user.description);
     
-    if (!_gDriveService) {
-        _gDriveService = [[PWCGoogleDriveService alloc] init];
-    }
+//    if (!_gDriveService) {
+//        _gDriveService = [[PWCGoogleDriveService alloc] init];
+//    }
 
     // A user can transition in or out of a region while the application is not running.
     // When this happens CoreLocation will launch the application momentarily, call this delegate method

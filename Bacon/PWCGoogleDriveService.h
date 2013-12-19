@@ -12,7 +12,7 @@
 
 @interface PWCGoogleDriveService : NSObject
 
-- (void)postToSpreadsheet:(CLBeacon *)nearestBeacon
++ (void)postToSpreadsheet:(CLBeacon *)nearestBeacon
             withEntryTime:(NSDate *)entryTime
            regionExitTime:(NSDate *)exitTime;
 
